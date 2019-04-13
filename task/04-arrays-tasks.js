@@ -549,8 +549,28 @@ function toStringList(arr) {
  *      { country: 'Russia',  city: 'Saint Petersburg' }
  */
 function sortCitiesArray(arr) {
-   throw new Error('Not implemented');
+   arr.sort((a, b) => {
+      let countryA = a.country.toLowerCase();
+      let countryB = b.country.toLowerCase();
+      let cityA = a.city.toLowerCase();
+      let cityB = b.city.toLowerCase();
+      
 
+      if (countryA < countryB) {
+          return -1
+      } else if (countryA > countryB) {
+          return 1
+      } else {
+          if (cityA < cityB) {
+              return -1
+          } else if (cityA > cityB) {
+              return 1
+          } else {
+              return 0;
+          } 
+  } });
+
+  return arr;
 }
 
 /**
@@ -667,7 +687,26 @@ function distinct(arr) {
  *   }
  */
 function group(array, keySelector, valueSelector) {
+   // let map = new Map();
+   //  let obj = {};
+   
+   //  for(let i = 0; i < array.length; i++) {
+   //      let temp = array[i];
+   //      if(!(temp[keySelector] in obj) ) {
+   //          obj[ temp[keySelector] ] = [];
+   //          obj[ temp[keySelector] ].push(temp[valueSelector]);
+   //          continue;
+   //      }
+   //      obj[ temp[keySelector] ].push(temp[valueSelector]);
+   //  }
+
+   //  for(let key in obj) {
+   //      map.set(k, obj[key]);
+   //  }
+
+   //  return map;
    throw new Error('Not implemented');
+
 }
 
 
@@ -683,7 +722,15 @@ function group(array, keySelector, valueSelector) {
  *   ['one','two','three'], x=>x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
 function selectMany(arr, childrenSelector) {
-   throw new Error('Not implemented');
+   //let newArr = arr.flat();
+
+    let res = arr.reduce((acc, item) => {
+        let temp = childrenSelector(item)
+        return acc.concat(temp);
+        
+    }, [])
+    
+    return res;
 }
 
 
