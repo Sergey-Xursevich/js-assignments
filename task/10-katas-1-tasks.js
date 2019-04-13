@@ -55,8 +55,45 @@ function createCompassPoints() {
  *
  *   'nothing to do' => 'nothing to do'
  */
-function* expandBraces(str) {
-    throw new Error('Not implemented');
+function expandBraces(str) {
+    const output = []; 
+    const input = [ str ];
+  
+    while(input.length > 0){
+        const e = input.shift().split('');
+        const st = e.indexOf('{');
+
+        if(st > -1){
+            let count = 0; 
+
+            for(let i = st; i < e.length; i++){
+                if(e[i] === '{') count++;
+
+                if(e[i] === '}') count--;
+
+                if(count > 1 && e[i] === ',') e[i] = '\t';
+
+                if(count === 0){
+                    const tmp = e.slice(st + 1, i).join('').split(',');
+
+                    for(var it of tmp){
+                        if(!it.includes('{') && !it.includes('}')) {
+                            input.push(e.join('').replace(e.slice(st, i + 1).join(''), it));
+                        } else {
+                            input.push(e.join('').replace(e.slice(st, i + 1).join(''), it.replace(/\t/g, ',')));
+                        }
+                    }
+                    
+                    break;
+                }
+            }
+        }
+        else{
+            output.push(e.join(''));
+        }
+    }
+
+    return output;
 }
 
 
