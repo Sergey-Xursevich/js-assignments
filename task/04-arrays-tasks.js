@@ -169,7 +169,13 @@ function getStringsLength(arr) {
  *    [ 1, 'b', 'c'], 0, 'x'  => [ 'x', 1, 'b', 'c' ]
  */
 function insertItem(arr, item, index) {
-   throw new Error('Not implemented');
+   if (typeof index == "string") {
+      arr.splice(item, 0, index);
+      return arr;
+   }
+
+   arr.splice(index, 0, item);
+   return arr; 
 }
 
 /**
@@ -183,7 +189,11 @@ function insertItem(arr, item, index) {
  *    [ 'a', 'b', 'c', 'd'], 3  => [ 'a', 'b', 'c' ]
  */
 function getHead(arr, n) {
-   throw new Error('Not implemented');
+   let res = [];
+   for(let i = 0; i < n; i++) {
+      res.push(arr[i]);
+   }
+   return res;
 }
 
 
@@ -223,7 +233,21 @@ function getTail(arr, n) {
  *    +'30,31,32,33,34'
  */
 function toCsvText(arr) {
-   throw new Error('Not implemented');
+   let str = "";
+   let endNumber = arr[arr.length - 1][arr.length];
+   for(let i = 0; i < arr.length; i++) {
+      for(let j = 0; j < arr[i].length; j++) {
+         if(j == arr.length && arr[i][j] != endNumber) {
+            str += arr[i][j] + "\n";
+         } else if (arr[i][j] == endNumber) {
+            str += arr[i][j];
+         } else {
+            str += arr[i][j] + ",";
+         }
+      }
+   }
+
+   return str;
 }
 
 /**
@@ -349,7 +373,15 @@ function get3TopItems(arr) {
  *   [ 1, '2' ] => 1
  */
 function getPositivesCount(arr) {
-   throw new Error('Not implemented');
+   let count = 0;
+   
+   for(let i = 0; i < arr.length; i++) {
+      if(count < arr[i] && typeof arr[i] == "number") {
+         count = arr[i];
+      }
+   }
+
+   return count;
 }
 
 /** 
@@ -366,7 +398,46 @@ function getPositivesCount(arr) {
  *   [ 'one','one','one','zero' ]     => [ 'zero','one','one','one' ]
  */
 function sortDigitNamesByNumericOrder(arr) {
-   throw new Error('Not implemented');
+   let convertNumber = [];
+   let res = [];
+
+   var objStr = {
+      'zero': 0,
+      'one': 1,
+      'two': 2,
+      'three': 3,
+      'four': 4,
+      'five': 5,
+      'six': 6,
+      'seven': 7,
+      'eight': 8,
+      'nine': 9
+   }
+
+   var objDijit = {
+      0 : 'zero',
+      1 : 'one',
+      2 : 'two',
+      3 : 'three',
+      4 : 'four',
+      5 : 'five',
+      6 : 'six',
+      7 : 'seven',
+      8 : 'eight',
+      9 : 'nine'
+   }
+
+   for(let i = 0; i < arr.length; i++) {
+      convertNumber.push( objStr[arr[i]] );
+   }
+
+   convertNumber.sort();
+
+   for(let i = 0; i < convertNumber.length; i++) {
+      res.push(objDijit[convertNumber[i]]);
+   }
+
+   return res;
 }
 
 /** 
@@ -501,7 +572,20 @@ function sortCitiesArray(arr) {
  *           [0,0,0,0,1]]   
  */
 function getIdentityMatrix(n) {
-   throw new Error('Not implemented');
+   let arr = [];
+
+   for(let i = 0; i < n; i++){
+      arr[i] = [];
+      for(let j = 0; j < n; j++){
+         if(j == i) {
+            arr[i][j] = 1;
+            continue;
+         }
+         arr[i][j] = 0;
+      }
+    }
+
+    return arr;      
 }
 
 /**
@@ -518,7 +602,15 @@ function getIdentityMatrix(n) {
  *     3, 3   => [ 3 ]
  */
 function getIntervalArray(start, end) {
-   throw new Error('Not implemented');
+   let res = [];
+
+   for(let i = start; i <= end; i++) {
+      if(res.indexOf(i) == -1) {
+         res.push(i);
+      }
+   }
+
+   return res;
 }
 
 /**
@@ -533,7 +625,15 @@ function getIntervalArray(start, end) {
  *   [ 1, 1, 2, 2, 3, 3, 4, 4] => [ 1, 2, 3, 4]
  */
 function distinct(arr) {
-   throw new Error('Not implemented');
+   let res = [];
+
+   for(let i = 0; i < arr.length; i++) {
+      if(res.indexOf(arr[i]) == -1) {
+         res.push(arr[i]);
+      }
+   }
+
+   return res;
 }
 
 /**
@@ -623,7 +723,18 @@ function getElementByIndexes(arr, indexes) {
  * 
  */
 function swapHeadAndTail(arr) {
-   throw new Error('Not implemented');
+   let res = [], head = 0, tail = 0;
+   if (arr.length % 2 != 0) {
+      head = arr.slice(0, arr.length / 2);
+      tail = arr.slice( (arr.length / 2) + 1, arr.length);
+
+      return res.concat(tail, arr[Math.floor(arr.length / 2)], head);
+   } 
+
+   head = arr.slice(0, arr.length / 2);
+   tail = arr.slice( (arr.length / 2), arr.length);
+   
+   return res.concat(tail, head);   
 }
 
 
