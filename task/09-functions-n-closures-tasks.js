@@ -71,7 +71,25 @@ function getPowerFunction(exponent) {
  *   getPolynom()      => null
  */
 function getPolynom() {
-    throw new Error('Not implemented');
+    let arr = Array.prototype.slice.call(arguments, "");
+    switch (arr.length) {
+        case 3:
+            return (value) => {
+                let res = arr[0] * value * value + arr[1] * value + arr[2];
+                return res;
+            }
+        case 2:
+            return (value) => {
+                let res = arr[0] * value + arr[1];
+                return res;
+            }   
+        case 1:
+            return (value) => {
+                return arr[0];
+            }        
+        default:
+            return null;
+    }
 }
 
 
@@ -90,7 +108,17 @@ function getPolynom() {
  *   memoizer() => the same random number  (next run, returns the previous cached result)
  */
 function memoize(func) {
-    throw new Error('Not implemented');
+    var memory = new Map();
+    return function(arg) {
+        if (memory.has(arg)) {
+            console.log('using memory');
+            return memory.get(arg);
+        } else {
+            var result = func(arg);
+            memory.set(arg, result);
+            return result;
+        }
+    };
 }
 
 
@@ -156,7 +184,12 @@ function logger(func, logFunc) {
  *   partialUsingArguments(fn, 'a','b','c','d')() => 'abcd'
  */
 function partialUsingArguments(fn) {
-    throw new Error('Not implemented');
+    let bound_args = [].slice.call(arguments, 1);
+    return function() {
+        let args = [].splice.call(arguments, "");
+        let mass = bound_args.concat(args);
+        return fn.apply(this, mass);
+    };
 }
 
 
