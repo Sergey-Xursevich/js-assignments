@@ -54,15 +54,12 @@ function getCicleCircumference(radius) {
  *  -3, 3  => 0
  */
 function getAverage(value1, value2) {
-    // let res = (value1 + value2) / 2;
+    if(value1 === Number.MAX_VALUE) {
+        return Number.MAX_VALUE;
+    }
 
-    // if(res == -1.7976931348623157e+308) {
-    //     return Number.POSITIVE_INFINITY;
-    // }
-
-    // return res
-
-    throw new Error('Not implemented');
+    let res = (value1 + value2) / 2;
+    return res
 }
 
 /**
@@ -120,7 +117,11 @@ function getLinearEquationRoot(a, b) {
  *   (0,1) (1,2)     => 0
  */
 function getAngleBetweenVectors(x1, y1, x2, y2) {
-    throw new Error('Not implemented');
+    let multiply = x1*x2 + y1*y2;
+   let a = Math.sqrt(x1*x1 + y1*y1);
+   let b = Math.sqrt(x2*x2 + y2*y2);
+   let deg = Math.acos(multiply / (a * b));
+   return deg;
 }
 
 /**
@@ -234,7 +235,11 @@ function isPrime(n) {
  *   toNumber(new Number(42), 0) => 42
  */
 function toNumber(value, def) {
-    throw new Error('Not implemented');
+    if(!Number(value)) {
+        return def;
+    }
+
+    return Number(value);
 }
 
 module.exports = {
