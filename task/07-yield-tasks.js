@@ -32,8 +32,32 @@
  * @return {Iterable.<string>}
  *
  */
-function* get99BottlesOfBeer() {
-    throw new Error('Not implemented');
+function get99BottlesOfBeer() {
+    let beerNum = 99;
+    let word = "bottles"
+    let str = [];
+
+    while(beerNum > 0) {
+        str.push(beerNum + " " + word + " of beer on the wall, " + beerNum + " " + word + " of beer.");
+        
+        beerNum--;
+
+        if(beerNum == 1) {
+            word = "bottle";
+        }
+
+        if(beerNum > 0) {
+            str.push("Take one down and pass it around, " + beerNum + " " + word + " of beer on the wall.");
+        }        
+    }
+    if (beerNum == 0) {
+        str.push("Take one down and pass it around, no more bottles of beer on the wall.");
+       str.push("No more bottles of beer on the wall, no more bottles of beer.");
+        str.push("Go to the store and buy some more, 99 bottles of beer on the wall.");
+        
+    }
+
+    return str;
 }
 
 
@@ -46,8 +70,26 @@ function* get99BottlesOfBeer() {
  * @return {Iterable.<number>}
  *
  */
-function* getFibonacciSequence() {
-    throw new Error('Not implemented');
+function getFibonacciSequence() {
+    let n = 39088169;
+    let invoke = 0;
+
+    const fibSequence = [0, 1];
+    let currentValue = 1;
+    let previousValue = 0;
+    if (n === 1) {
+        return fibSequence;
+    }
+    let iterationsCounter = n - 1;
+    while (iterationsCounter) {
+        invoke++
+        currentValue += previousValue;
+        previousValue = currentValue - previousValue;
+        fibSequence.push(currentValue);
+        iterationsCounter -= 1;
+    }
+
+    return fibSequence;
 }
 
 
@@ -126,7 +168,7 @@ function* breadthTraversalTree(root) {
  *   [ 1, 3, 5, ... ], [ -1 ] => [ -1, 1, 3, 5, ...]
  */
 function* mergeSortedSequences(source1, source2) {
-    throw new Error('Not implemented');
+    throw new Error('Not implemented');    
 }
 
 
