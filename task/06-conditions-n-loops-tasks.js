@@ -140,6 +140,7 @@ function isTriangle(a,b,c) {
  *  
  */
 function doRectanglesOverlap(rect1, rect2) {
+    // return ( rect1.left < rect2.height || rect1.height > rect2.left || rect1.width < rect2.top || rect1.top > rect2.width )
     throw new Error('Not implemented');
 }
 
@@ -171,6 +172,11 @@ function doRectanglesOverlap(rect1, rect2) {
  *   
  */
 function isInsideCircle(circle, point) {
+    // var distanceQuad = Math.pow((point.x - circle.center.x), 2) + Math.pow((point.y - circle.center.y), 2);
+    // if (distanceQuad <= Math.pow(circle.radius)) {
+    //     return true;
+    // }
+    // return false;
     throw new Error('Not implemented');
 }
 
@@ -289,7 +295,15 @@ function reverseInteger(num) {
  *   4916123456789012 => false
  */
 function isCreditCardNumber(ccn) {
-    throw new Error('Not implemented');
+
+    let value = String(ccn);
+
+    return 0 === (value.replace(/\D/g, '').split('').reverse().map(function(d, i) {
+        return +['0123456789','0246813579'][i % 2][+d];
+      }).reduce(function(p, n) {
+        return p + n;
+      }) % 10);
+
 }
 
 
