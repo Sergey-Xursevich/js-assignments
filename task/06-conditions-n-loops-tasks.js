@@ -30,7 +30,15 @@
  *
  */
 function getFizzBuzz(num) {
-    throw new Error('Not implemented');
+    if(num % 3 === 0 && num % 5 === 0) {
+        return 'FizzBuzz';
+    } else if(num % 3 === 0) {
+        return 'Fizz';
+    } else if(num % 5 === 0) {
+        return 'Buzz';
+    } else {
+        return num;
+    }
 }
 
 
@@ -46,7 +54,7 @@ function getFizzBuzz(num) {
  *   10 => 3628800
  */
 function getFactorial(n) {
-    throw new Error('Not implemented');
+    return n ? n * getFactorial(n - 1) : 1;
 }
 
 
@@ -63,7 +71,13 @@ function getFactorial(n) {
  *   -1,1  =>  0  ( = -1 + 0 + 1 )
  */
 function getSumBetweenNumbers(n1, n2) {
-    throw new Error('Not implemented');
+    let res = 0;
+
+    for(; n1 <= n2; n1++) {
+        res += n1;
+    }
+
+    return res;
 }
 
 
@@ -82,7 +96,14 @@ function getSumBetweenNumbers(n1, n2) {
  *   10,10,10 =>  true
  */
 function isTriangle(a,b,c) {
-    throw new Error('Not implemented');
+    if(a < c && b < c) {
+        return (a + b) > c ? true : false;
+    } else if(a < b && c < b) {
+        return (a + c) > b ? true : false;
+    } else {
+        return (c + b) > a ? true : false;
+    }
+    
 }
 
 
@@ -166,7 +187,8 @@ function isInsideCircle(circle, point) {
  *   'entente' => null
  */
 function findFirstSingleChar(str) {
-    throw new Error('Not implemented');
+    var match = str.match(/(.)(?!.*\1)(?<!\1.+)/);
+    return match && match[1]
 }
 
 
@@ -192,7 +214,22 @@ function findFirstSingleChar(str) {
  *
  */
 function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
-    throw new Error('Not implemented');
+
+    if(b < a) {
+        let temp = a;
+        a = b;
+        b = temp;
+    }
+
+    if(isStartIncluded && isEndIncluded) {
+        return `[${a}, ${b}]`;
+    } else if(isStartIncluded && !isEndIncluded) {
+        return `[${a}, ${b})`;
+    } else if(!isStartIncluded && isEndIncluded) {
+        return `(${a}, ${b}]`;
+    } else {
+        return `(${a}, ${b})`;        
+    }
 }
 
 
@@ -209,7 +246,7 @@ function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
  * 'noon' => 'noon'
  */
 function reverseString(str) {
-    throw new Error('Not implemented');
+    return str.split("").reverse().join("");
 }
 
 
@@ -226,7 +263,8 @@ function reverseString(str) {
  *   34143 => 34143
  */
 function reverseInteger(num) {
-    throw new Error('Not implemented');
+    let res = String(num).split("").reverse().join("");
+    return Number(res);
 }
 
 
@@ -270,7 +308,18 @@ function isCreditCardNumber(ccn) {
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
 function getDigitalRoot(num) {
-    throw new Error('Not implemented');
+    let arr;
+    let res = [];
+   
+    if(num > 10) {
+      arr = num.toString().split("");
+      res.push( getDigitalRoot(arr.reduce(function(sum, item){
+        return sum + Number(item);
+      }, 0) ));    
+      return res[0];
+    } else {
+      return num;
+    }
 }
 
 
@@ -296,7 +345,48 @@ function getDigitalRoot(num) {
  *   '{[(<{[]}>)]}' = true 
  */
 function isBracketsBalanced(str) {
-    throw new Error('Not implemented');
+    let opening = {
+        '[': ']',
+        '{': '}',
+        '(': ')',
+        '<': '>',
+      };
+  
+      let stack = []; //массив стека
+   let ret = ''; //строка с открывающимся скобками
+   let flag = true;
+ 
+   for (let i = 0; i < str.length; i++) {
+     let c = str[i];
+ 
+     if (opening[c]) {
+       if (c == opening[c] && stack[stack.length-1] != c) {
+         stack.push(c);
+         continue;
+       }
+       if (c != opening[c]) {
+         stack.push(c);
+         continue;
+       }
+     }
+ 
+     if (!opening[c] || (c == opening[c])) {
+       if (stack.length === 0 || c != opening[stack[stack.length - 1]]) return false;
+ 
+       if (c == opening[c]) {
+         flag = true;
+       }
+ 
+       let br = stack.pop();
+       c = opening[br];
+     }
+     ret += c; //возвращаем строку с открывающимся скобками 
+   }
+ 
+   if (stack.length > 0) {
+     return false;
+   }
+   return true;
 }
 
 
@@ -356,7 +446,7 @@ function timespanToHumanString(startDate, endDate) {
  *    365, 10 => '365'
  */
 function toNaryString(num, n) {
-    throw new Error('Not implemented');
+    return num.toString(n);
 }
 
 
@@ -396,7 +486,19 @@ function getCommonDirectoryPath(pathes) {
  *
  */
 function getMatrixProduct(m1, m2) {
-    throw new Error('Not implemented');
+    var rowsA = m1.length, colsA = m1[0].length,
+        rowsB = m2.length, colsB = m2[0].length,
+        C = [];
+    if (colsA != rowsB) return false;
+    for (var i = 0; i < rowsA; i++) C[ i ] = [];
+    for (var k = 0; k < colsB; k++)
+     { for (var i = 0; i < rowsA; i++)
+        { var t = 0;
+          for (var j = 0; j < rowsB; j++) t += m1[ i ][j]*m2[j][k];
+          C[ i ][k] = t;
+        }
+     }
+    return C;
 }
 
 
