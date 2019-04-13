@@ -37,7 +37,9 @@ function parseDataFromRfc2822(value) {
  *    '2016-01-19T08:07:37Z' => Date()
  */
 function parseDataFromIso8601(value) {
-   throw new Error('Not implemented');
+   let today = new Date(value);
+
+   return today.getTime();
 }
 
 
@@ -56,8 +58,13 @@ function parseDataFromIso8601(value) {
  *    Date(2015,1,1)    => false
  */
 function isLeapYear(date) {
-  let d = new Date(date);
-  
+   date.setDate(date.getDate() + 28);
+   
+   if(date.getDate() != 29) {
+      return false;
+   }
+
+   return true;
 }
 
 
@@ -77,7 +84,20 @@ function isLeapYear(date) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
 function timeSpanToString(startDate, endDate) {
-   throw new Error('Not implemented');
+   let time = (endDate - startDate);
+
+   let milliseconds = (time % 1000 == 0) ? parseInt((time % 1000) / 100) : time % 1000,
+       seconds = parseInt((time / 1000) % 60),
+       minutes = parseInt((time / (1000 * 60)) % 60),
+       hours = parseInt((time / (1000 * 60 * 60)) % 24);
+       
+   hours = (hours < 10) ? "0" + hours : hours;
+   minutes = (minutes < 10) ? "0" + minutes : minutes;
+   seconds = (seconds < 10) ? "0" + seconds : seconds;
+   milliseconds = (milliseconds < 10) ? `00${milliseconds}` : 
+                  (milliseconds < 100) ? `0${milliseconds}` : `${milliseconds}`;
+   
+   return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
 }
 
 
