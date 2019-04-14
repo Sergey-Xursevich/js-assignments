@@ -18,7 +18,7 @@
  */
 function createCompassPoints() {
     throw new Error('Not implemented');
-    var sides = ['N','E','S','W'];  // use array of cardinal directions only!
+    var sides = ['N', 'E', 'S', 'W']; // use array of cardinal directions only!
 }
 
 
@@ -56,39 +56,38 @@ function createCompassPoints() {
  *   'nothing to do' => 'nothing to do'
  */
 function expandBraces(str) {
-    const output = []; 
-    const input = [ str ];
-  
-    while(input.length > 0){
+    const output = [];
+    const input = [str];
+
+    while (input.length > 0) {
         const e = input.shift().split('');
         const st = e.indexOf('{');
 
-        if(st > -1){
-            let count = 0; 
+        if (st > -1) {
+            let count = 0;
 
-            for(let i = st; i < e.length; i++){
-                if(e[i] === '{') count++;
+            for (let i = st; i < e.length; i++) {
+                if (e[i] === '{') count++;
 
-                if(e[i] === '}') count--;
+                if (e[i] === '}') count--;
 
-                if(count > 1 && e[i] === ',') e[i] = '\t';
+                if (count > 1 && e[i] === ',') e[i] = '\t';
 
-                if(count === 0){
+                if (count === 0) {
                     const tmp = e.slice(st + 1, i).join('').split(',');
 
-                    for(var it of tmp){
-                        if(!it.includes('{') && !it.includes('}')) {
+                    for (var it of tmp) {
+                        if (!it.includes('{') && !it.includes('}')) {
                             input.push(e.join('').replace(e.slice(st, i + 1).join(''), it));
                         } else {
                             input.push(e.join('').replace(e.slice(st, i + 1).join(''), it.replace(/\t/g, ',')));
                         }
                     }
-                    
+
                     break;
                 }
             }
-        }
-        else{
+        } else {
             output.push(e.join(''));
         }
     }
@@ -125,7 +124,61 @@ function expandBraces(str) {
  *
  */
 function getZigZagMatrix(n) {
-    throw new Error('Not implemented');
+    function diagonals(n) {
+        let diags = (xs, iCol, iRow) => {
+            if (iCol < xs.length) {
+                let xxs = splitAt(iCol, xs);
+
+                return [xxs[0]].concat(diags(
+                    xxs[1],
+                    iCol + (iRow < n ? 1 : -1),
+                    iRow + 1
+                ));
+            } else return [xs];
+        }
+
+        return diags(range(0, n * n - 1), 1, 1);
+    }
+
+
+    // Recursively read off n heads of diagonal lists
+    // rowsFromDiagonals :: n -> [[n]] -> [[n]]
+    function rowsFromDiagonals(n, lst) {
+        if (lst.length) {
+            let [edge, rest] = splitAt(n, lst);
+
+            return [edge.map(x => x[0])]
+                .concat(rowsFromDiagonals(n,
+                    edge.filter(x => x.length > 1)
+                    .map(x => x.slice(1))
+                    .concat(rest)
+                ));
+        } else return [];
+    }
+
+    // GENERIC FUNCTIONS
+
+    // splitAt :: Int -> [a] -> ([a],[a])
+    function splitAt(n, xs) {
+        return [xs.slice(0, n), xs.slice(n)];
+    }
+
+    // range :: From -> To -> Maybe Step -> [Int]
+    // range :: Int -> Int -> Maybe Int -> [Int]
+    function range(m, n, step) {
+        let d = (step || 1) * (n >= m ? 1 : -1);
+
+        return Array.from({
+            length: Math.floor((n - m) / d) + 1
+        }, (_, i) => m + (i * d));
+    }
+
+    // ZIG-ZAG MATRIX
+
+    return rowsFromDiagonals(n,
+        diagonals(n)
+        .map((x, i) => (i % 2 || x.reverse()) && x)
+    );
 }
 
 
@@ -174,13 +227,69 @@ function canDominoesMakeRow(dominoes) {
  * [ 1, 2, 4, 5]          => '1,2,4,5'
  */
 function extractRanges(nums) {
-    throw new Error('Not implemented');
+    // rangeFormat :: [Int] -> String
+    var rangeFormat = function (xs) {
+        return splitBy(function (a, b) {
+                return b - a > 1;
+            }, xs)
+            .map(rangeString)
+            .join(',');
+    };
+
+    // rangeString :: [Int] -> String
+    var rangeString = function (xs) {
+        return xs.length > 2 ? [head(xs), last(xs)].map(show)
+            .join('-') : xs.join(',');
+    };
+
+    // GENERIC FUNCTIONS
+
+    // Splitting not on a delimiter, but whenever the relationship between
+    // two consecutive items matches a supplied predicate function
+
+    // splitBy :: (a -> a -> Bool) -> [a] -> [[a]]
+    var splitBy = function (f, xs) {
+        if (xs.length < 2) return [xs];
+        var h = head(xs),
+            lstParts = xs.slice(1)
+            .reduce(function (a, x) {
+                var acc = a[0],
+                    active = a[1],
+                    prev = a[2];
+
+                return f(prev, x) ? (
+                    [acc.concat([active]), [x], x]
+                ) : [acc, active.concat(x), x];
+            }, [
+                [],
+                [h], h
+            ]);
+        return lstParts[0].concat([lstParts[1]]);
+    };
+
+    // head :: [a] -> a
+    var head = function (xs) {
+        return xs.length ? xs[0] : undefined;
+    };
+
+    // last :: [a] -> a
+    var last = function (xs) {
+        return xs.length ? xs.slice(-1)[0] : undefined;
+    };
+
+    // show :: a -> String
+    var show = function (x) {
+        return JSON.stringify(x);
+    };
+
+    // TEST
+    return rangeFormat(nums);
 }
 
 module.exports = {
-    createCompassPoints : createCompassPoints,
-    expandBraces : expandBraces,
-    getZigZagMatrix : getZigZagMatrix,
-    canDominoesMakeRow : canDominoesMakeRow,
-    extractRanges : extractRanges
+    createCompassPoints: createCompassPoints,
+    expandBraces: expandBraces,
+    getZigZagMatrix: getZigZagMatrix,
+    canDominoesMakeRow: canDominoesMakeRow,
+    extractRanges: extractRanges
 };
