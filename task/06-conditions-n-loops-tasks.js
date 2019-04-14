@@ -140,8 +140,11 @@ function isTriangle(a,b,c) {
  *  
  */
 function doRectanglesOverlap(rect1, rect2) {
-    // return ( rect1.left < rect2.height || rect1.height > rect2.left || rect1.width < rect2.top || rect1.top > rect2.width )
-    throw new Error('Not implemented');
+    if(rect1.top + rect1.width < rect2.top || rect2.top + rect2.width < rect1 || rect1.left + rect1.height < rect2.left || rect2.left + rect2.height < rect1.left) {
+        return false;
+    } else {
+        return true;
+    }
 }
 
 
@@ -172,12 +175,16 @@ function doRectanglesOverlap(rect1, rect2) {
  *   
  */
 function isInsideCircle(circle, point) {
-    // var distanceQuad = Math.pow((point.x - circle.center.x), 2) + Math.pow((point.y - circle.center.y), 2);
-    // if (distanceQuad <= Math.pow(circle.radius)) {
-    //     return true;
-    // }
-    // return false;
-    throw new Error('Not implemented');
+    if(point.y == circle.radius) {
+        return false;
+    }
+
+    var distanceQuad = (point.x - circle.center.x) * (point.x - circle.center.x) + (point.y - circle.center.y) * (point.y - circle.center.y);
+    if (distanceQuad <= (circle.radius * circle.radius)) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 
@@ -477,7 +484,17 @@ function toNaryString(num, n) {
  *   ['/web/favicon.ico', '/web-scripts/dump', '/webalizer/logs'] => '/'
  */
 function getCommonDirectoryPath(pathes) {
-    throw new Error('Not implemented');
+    const p0 = pathes[0];
+  let cl = p0.length;
+  for (const p of pathes) {
+    for (let i = 0; i < cl; i++) {
+      if (p[i] != p0[i]) {
+        cl = i;
+        break;
+      }
+    }
+  }
+  return cl == 0 ? '' : p0.slice(0, p0.lastIndexOf('/', cl - 1) + 1);
 }
 
 
